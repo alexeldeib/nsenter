@@ -25,4 +25,4 @@ RUN ./bootstrap
 RUN FORCE_UNSAFE_CONFIGURE=1 ./configure
 RUN cp /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginT.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginT.orig.o
 RUN cp /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginT.o
-RUN make SHARED=0 CFLAGS='-static -std=gnu99 -static-libgcc -static-libstdc++ -fPIC' -j $(nproc) src/sleep.c
+RUN make SHARED=0 CFLAGS='-static -std=gnu99 -static-libgcc -static-libstdc++ -fPIC' -j $(nproc) src/sleep
