@@ -32,7 +32,7 @@ jobs:
         docker push ${REPO}/${IMG_PREFIX}:${TAG}
         docker push ${REPO}/${IMG_PREFIX}:latest
         docker run -t --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} ${REPO}/${IMG_PREFIX}-dev:${TAG} cp /code/util-linux/nsenter ${GITHUB_WORKSPACE}/nsenter
-        docker run -t --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} ${REPO}/${IMG_PREFIX}-dev:${TAG} cp /code/coreutils/src/nsenter ${GITHUB_WORKSPACE}/nsenter
+        docker run -t --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} ${REPO}/${IMG_PREFIX}-dev:${TAG} cp /code/coreutils/src/sleep ${GITHUB_WORKSPACE}/nsenter
     - uses: actions/upload-artifact@v1
       with:
         name: nsenter
