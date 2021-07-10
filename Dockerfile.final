@@ -6,7 +6,7 @@ FROM ${IMG}:${TAG} as builder
 # Final image
 FROM scratch
 
-COPY --from=nsenter /code/util-linux/nsenter /
-COPY --from=coreutils /code/coreutils/src/sleep /sleep
+COPY --from=builder /code/util-linux/nsenter /
+COPY --from=builder /code/coreutils/src/sleep /sleep
 
 ENTRYPOINT ["/sleep"]

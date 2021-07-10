@@ -1,7 +1,6 @@
-FROM debian:buster as nsenter
+FROM debian:buster as builder
 
-# intall gcc and supporting packages
-RUN apt-get update && apt-get install -yq make gcc gettext autopoint bison libtool automake pkg-config
+RUN apt-get update && apt-get install -yq make wget git rsync gcc gettext autopoint bison libtool automake pkg-config gperf texinfo patch
 
 WORKDIR /code
 
@@ -14,13 +13,6 @@ RUN tar -xf v${UTIL_LINUX_VER}.tar.gz && mv util-linux-${UTIL_LINUX_VER} util-li
 WORKDIR /code/util-linux
 RUN ./autogen.sh && ./configure
 RUN make LDFLAGS="--static" nsenter
-
-FROM debian:buster as coreutils
-
-# intall gcc and supporting packages
-RUN apt-get update && apt-get install -yq make wget git rsync gcc gettext autopoint bison libtool automake pkg-config gperf texinfo patch
-
-WORKDIR /code
 
 # download coreutils sources
 ARG COREUTILS_VER=8.32
