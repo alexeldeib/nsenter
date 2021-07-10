@@ -1,0 +1,38 @@
+name: nsenter
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch: {}
+
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+  REPO: docker.io/alexeldeib
+  IMG_PREFIX: nsenter
+
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: build image
+      run: |
+        set -euo pipefail
+        docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+        TAG=$(date -Ihours | tr :+ -)
+        echo "TAG: ${TAG}"
+        docker build -t ${REPO}/${IMG_PREFIX}-dev:${TAG} .
+        docker build -f Dockerfile.final --build-arg IMG=${REPO}/${IMG_PREFIX}-dev --build-arg TAG=${TAG} -t ${REPO}/${IMG_PREFIX}:${TAG} .
+        
+        docker tag ${REPO}/${IMG_PREFIX}-dev:${TAG} ${REPO}/${IMG_PREFIX}-dev:latest
+        docker push ${REPO}/${IMG_PREFIX}-dev:${TAG}
+        docker push ${REPO}/${IMG_PREFIX}-dev:latest
+        docker tag ${REPO}/${IMG_PREFIX}:${TAG} ${REPO}/${IMG_PREFIX}:latest
+        docker push ${REPO}/${IMG_PREFIX}:${TAG}
+        docker push ${REPO}/${IMG_PREFIX}:latest
+        docker run -t --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} ${REPO}/${IMG_PREFIX}-dev:${TAG} cp /code/util-linux/nsenter ${GITHUB_WORKSPACE}/nsenter
+    - uses: actions/upload-artifact@v1
+      with:
+        name: nsenter
+        path: nsenter

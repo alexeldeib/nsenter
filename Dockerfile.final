@@ -1,0 +1,11 @@
+ARG IMG=nsenter
+ARG TAG
+
+FROM ${IMG}:${TAG} as builder
+
+# Final image
+FROM scratch
+
+COPY --from=builder /code/util-linux/nsenter /
+
+ENTRYPOINT ["/nsenter"]
