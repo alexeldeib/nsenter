@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -yq make wget git rsync gcc gettext autopo
 WORKDIR /code
 
 # download util-linux sources
-ARG UTIL_LINUX_VER=2.37
-ADD https://github.com/karelzak/util-linux/archive/v${UTIL_LINUX_VER}.tar.gz .
+ARG UTIL_LINUX_VER=2.38
+ADD https://github.com/util-linux/util-linux/archive/v${UTIL_LINUX_VER}.tar.gz .
 RUN tar -xf v${UTIL_LINUX_VER}.tar.gz && mv util-linux-${UTIL_LINUX_VER} util-linux
 
 # make static version
